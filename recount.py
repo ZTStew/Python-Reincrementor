@@ -77,9 +77,21 @@ if args.test:
 # gets a list of all files in the current directory
 files = [f for f in os.listdir('.') if os.path.isfile(f)]
 # must sort the array of files as according to a computer's file system '10' comes before '2'
+# print(files)
+# identifies the longest file name in `files` so that each file can be preceded with 0's. This will help with sorting.
+depth = 1
+for l in files:
+  if len(l.split(".")[0]) > depth:
+    depth = len(l.split(".")[0])
+
+# renames files in `files` so that they can be accurately sorted
+for z in range(len(files)):
+  files[z] = files[z].split(".")[0].zfill(depth)
+
+# sorts files
+files.sort()
+
 print(files)
-for f in files:
-  print(f)
 
 
 
