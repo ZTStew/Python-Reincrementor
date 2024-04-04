@@ -8,3 +8,79 @@ Arguments:
   start (int) -> the point for the reincrement to start | default 0
 """
 
+import os, argparse
+import logging as log
+
+log.basicConfig(
+    filename=os.path.dirname(os.path.abspath(__file__)) + '\\log\\recount.log',
+    level=log.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+# log.debug("debug message")
+# log.info("info message")
+# log.warning("warning message")
+# log.error("error message")
+# log.critical("critical message")
+
+
+log.critical("### ### ### V Program Starts V ### ### ###")
+
+args = argparse.ArgumentParser()
+args.add_argument(
+  "-f",
+  "--file",
+  type=str,
+  help="Specify the file type."
+)
+args.add_argument(
+  "-s",
+  "--start",
+  type=int,
+  help="Specify the starting value of the recounted files."
+)
+args.add_argument(
+  "-p",
+  "--padding",
+  type=int,
+  help="Specify the zero-padding depth of the recounted file names. (default) 1 = 2 | 2 = 02 | 3 = 002"
+)
+
+args.add_argument(
+  "-t",
+  "--test",
+  type=int,
+  help="Declair if the application should run in test mode [0 -> production (default) | 1 -> test mode]."
+)
+
+args = args.parse_args()
+file_type = args.file
+start = args.start
+
+if not file_type:
+  file_type = "*"
+
+if not start:
+  start = 0
+else:
+  try:
+    start = int(start)
+  except:
+    log.error("ERROR: Invalid starting point")
+    print("ERROR: Invalid starting point")
+
+print(file_type)
+print(start)
+
+if args.test:
+  log.critical("Test Running")
+
+# gets a list of all files in the current directory
+files = [f for f in os.listdir('.') if os.path.isfile(f)]
+# must sort the array of files as according to a computer's file system '10' comes before '2'
+print(files)
+for f in files:
+  print(f)
+
+
+
+
