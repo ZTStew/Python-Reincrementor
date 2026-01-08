@@ -1,15 +1,24 @@
 # Python Reincrementor
 ---
 ## Description:  
-recount - Program takes the files in a folder alphabetically and renames them 1, 2, 3...
+Program runs through a given folder and reincrements the files contained within to not have any gaps in the numbering system.
 
---
-### Requirements:
-- [ ] Program should read each file in the active folder
-- [ ] Program should in alphabetical order rename the files 1, 2, 3...
+Example:
+1, 4, 5, 6, 9 -> 1, 2, 3, 4, 5
+
+Program allows the starting point to be set by the user with the default being `1`
+
+Program determines reincrement order based on current file order
+
+
+---
+### Other Ideas:
+- Allow reincrementor to work on non-number files?
+- Set reincrementor to run in all sub-directories of current one instead of just the current directory
 
 ---
 ### Usage:
 (explanation of how to use the program)
-1. Navigate to the directory you want to reincrement
-2. Execute `recount.py`
+1. Navigate to desired folder in terminal
+2. Run `reincrement` or `recount`
+3. *Files get automatically renamed*
