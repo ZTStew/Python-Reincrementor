@@ -29,4 +29,4 @@ Program determines reincrement order based on current file order
 
 ---
 ### Test Settings:
-python reincrementor.py -t 1 -st 5 -f txt -d 3 -p pre -sf suf -sp _ 
+python reincrementor.py -t 1 -st 5 -f txt -d 3 -p pre -sf suf -sp _ -n 1

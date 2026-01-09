@@ -21,8 +21,8 @@ log.basicConfig(
 
 log.critical("### ### ### V Program Starts V ### ### ###")
 
-
-blacklist = [".empty"]
+# List of any files (ends) that should not be automatically edited
+blacklist = [".empty", ".gitignore", ".md"]
 
 test_mode = False
 start_point = 1
@@ -132,9 +132,12 @@ for (dirpath, dirnames, filenames) in walk(run_location):
 n_files = []
 
 for file in files:
+  blacklisted = False
   for black in blacklist:
-    if not file.endswith(black):
-      n_files.append(file)
+    if black in file:
+      blacklisted = True
+  if not blacklisted:
+    n_files.append(file)
 
 files = n_files
 # print(files)
@@ -181,12 +184,12 @@ elif digits < depth:
 # renames files in `files` so that they can be accurately sorted
 for z in range(len(files)):
   files[z] = files[z].split(".")[0].zfill(digits)
-  print(files[z])
+  # print(files[z])
 
 # sorts files
 files.sort()
 
-# print(files)
+print(files)
 
 
 
