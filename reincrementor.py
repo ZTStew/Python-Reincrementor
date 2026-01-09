@@ -21,6 +21,9 @@ log.basicConfig(
 
 log.critical("### ### ### V Program Starts V ### ### ###")
 
+
+blacklist = [".empty"]
+
 test_mode = False
 start_point = 1
 file_type = ""
@@ -123,6 +126,17 @@ files = []
 for (dirpath, dirnames, filenames) in walk(run_location):
   files.extend(filenames)
   break
+# print(files)
+
+# Removes any Blacklisted files from `files`
+n_files = []
+
+for file in files:
+  for black in blacklist:
+    if not file.endswith(black):
+      n_files.append(file)
+
+files = n_files
 # print(files)
 
 # Checks `files` list for specified file_type
