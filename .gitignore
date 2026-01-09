@@ -1,6 +1,7 @@
 *.mp4
 output*/
 Execute*/
+Out*/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

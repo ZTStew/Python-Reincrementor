@@ -5,6 +5,7 @@ Description:
 import os, argparse
 import logging as log
 from os import walk
+from operator import itemgetter
 
 path = os.path.dirname(os.path.abspath(__file__)) + '\\Log\\template.log'
 
@@ -199,12 +200,13 @@ elif digits < depth:
 for z in range(len(files)):
   if files[z]['new'] != "":
     files[z]['new'] = files[z]['new'].split(".")[0].zfill(digits)
-  print(files[z])
+  # print(files[z])
 
 
-# # sorts files
-# files.sort()
+files = sorted(files, key=itemgetter('new'))
 
+# for i in files:
+#   print(i['new'])
 # print(files)
 
 
