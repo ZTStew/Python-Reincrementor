@@ -122,14 +122,15 @@ if test_mode:
   run_location = "./Execute"
 
 # searches through run location for files that can be reincremented
+# files = [{'original': "og", 'new': "nw"}]
 files = []
 for (dirpath, dirnames, filenames) in walk(run_location):
-  files.extend(filenames)
+  # print(filenames)
+  # files.extend(filenames)
+  for file in filenames:
+    files.append({'original': file, 'new': file})
   break
-
-files_original = files
-
-print(files)
+# print(files)
 
 # Removes any Blacklisted files from `files`
 n_files = []
@@ -137,12 +138,13 @@ n_files = []
 for file in files:
   blacklisted = False
   for black in blacklist:
-    if black in file:
+    if black in file['new']:
       blacklisted = True
   if not blacklisted:
     n_files.append(file)
   else:
-    n_files.append("")
+    file['new'] = ""
+    n_files.append(file)
 
 files = n_files
 # print(files)
@@ -152,10 +154,13 @@ if file_type:
   n_files = []
 
   for file in files:
-    if file.endswith(file_type):
+    # whitelisted files
+    if file['new'].endswith(file_type):
       n_files.append(file)
+    # non-whitelisted files
     else:
-      n_files.append("")
+      file['new'] = ""
+      n_files.append(file)
 
   files = n_files
 # print(files)
@@ -166,9 +171,11 @@ if numeric > 0:
 
   for file in files:
     try:
-      n_files.append(str(int(file.split(".")[0])))
+      file['new'] = str(int(file['new'].split(".")[0]))
+      n_files.append(file)
     except:
-      n_files.append("")
+      file['new'] = ""
+      n_files.append(file)
 
   files = n_files
 print(files)
@@ -177,8 +184,8 @@ print(files)
 # identifies the longest file name in `files` so that each file can be preceded with 0's. This will help with sorting.
 depth = 1
 for l in files:
-  if len(l.split(".")[0]) > depth:
-    depth = len(l.split(".")[0])
+  if len(l['new'].split(".")[0]) > depth:
+    depth = len(l['new'].split(".")[0])
 
 if digits == 0:
   digits = depth
@@ -190,13 +197,13 @@ elif digits < depth:
 
 # renames files in `files` so that they can be accurately sorted
 for z in range(len(files)):
-  if files[z] != "":
-    files[z] = files[z].split(".")[0].zfill(digits)
-  # print(files[z])
+  if files[z]['new'] != "":
+    files[z]['new'] = files[z]['new'].split(".")[0].zfill(digits)
+  print(files[z])
 
 
-# sorts files
-files.sort()
+# # sorts files
+# files.sort()
 
 # print(files)
 
