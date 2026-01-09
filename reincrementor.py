@@ -23,6 +23,9 @@ log.critical("### ### ### V Program Starts V ### ### ###")
 start_point = 1
 file_type = "*"
 digits = 1
+prefix = ""
+suffix = ""
+space = " "
 
 args = argparse.ArgumentParser()
 args.add_argument(
@@ -32,16 +35,10 @@ args.add_argument(
   help="Declair if the application should run in test mode [0 -> production (default) | 1 -> test mode]."
 )
 args.add_argument(
-  "-s",
+  "-st",
   "--start",
   type=int,
   help="Declair start value for reincrementing."
-)
-args.add_argument(
-  "-f",
-  "--file",
-  type=str,
-  help="Declair a specific file type to be reincremented. Default all files."
 )
 args.add_argument(
   "-f",
@@ -59,19 +56,19 @@ args.add_argument(
   "-p",
   "--prefix",
   type=str,
-  help="Declair if the reincremented files should have a prefix in front of the number ([space] automatically added after). Example: pre -> `pre 008.file`"
+  help="Declair if the reincremented files should have a prefix in front of the number (`--space` automatically added after). Default \"\". Example: pre -> `pre 008.file`"
 )
 args.add_argument(
-  "-s",
+  "-sf",
   "--suffix",
   type=str,
-  help="Declair if the reincremented files should have a suffix after the number ([space] automatically added before). Example: suf -> `008 suf.file`"
+  help="Declair if the reincremented files should have a suffix after the number (`--space` automatically added before). Default \"\". Example: suf -> `008 suf.file`"
 )
 args.add_argument(
   "-sp",
   "--space",
   type=str,
-  help="Defines what the `space` symbol should be in reincremented file name. Default ` `. Works with --prefix and/or --suffix. Example: `_` -> `008_suf.file`"
+  help="Defines what the `space` symbol should be in reincremented file name. Default \"\". Works with --prefix and/or --suffix. Example: `_` -> `008_suf.file`"
 )
 
 
@@ -93,7 +90,14 @@ if args.file:
 if args.digits:
   digits = args.digits
 
+if args.prefix:
+  prefix = args.prefix
 
+if args.suffix:
+  suffix = args.suffix
+
+if args.space:
+  space = args.space
 
 
 
