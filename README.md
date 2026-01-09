@@ -22,3 +22,11 @@ Program determines reincrement order based on current file order
 1. Navigate to desired folder in terminal
 2. Run `reincrement` or `recount`
 3. *Files get automatically renamed*
+
+---
+### Arguments:
+
+
+---
+### Test Settings:
+python reincrementor.py -t 1 -st 5 -f txt -d 3 -p pre -sf suf -sp _ 
