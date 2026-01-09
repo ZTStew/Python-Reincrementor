@@ -113,8 +113,8 @@ if args.space:
   space = args.space
 
 
-print(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: {file_type} | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
-log.critical(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: {file_type} | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
+print(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: `{file_type}` | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
+log.critical(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: `{file_type}` | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
 
 
 run_location = "./"
@@ -126,7 +126,10 @@ files = []
 for (dirpath, dirnames, filenames) in walk(run_location):
   files.extend(filenames)
   break
-# print(files)
+
+files_original = files
+
+print(files)
 
 # Removes any Blacklisted files from `files`
 n_files = []
@@ -138,6 +141,8 @@ for file in files:
       blacklisted = True
   if not blacklisted:
     n_files.append(file)
+  else:
+    n_files.append("")
 
 files = n_files
 # print(files)
@@ -149,6 +154,8 @@ if file_type:
   for file in files:
     if file.endswith(file_type):
       n_files.append(file)
+    else:
+      n_files.append("")
 
   files = n_files
 # print(files)
@@ -161,10 +168,10 @@ if numeric > 0:
     try:
       n_files.append(str(int(file.split(".")[0])))
     except:
-      pass
+      n_files.append("")
 
   files = n_files
-# print(files)
+print(files)
 
 
 # identifies the longest file name in `files` so that each file can be preceded with 0's. This will help with sorting.
@@ -183,13 +190,16 @@ elif digits < depth:
 
 # renames files in `files` so that they can be accurately sorted
 for z in range(len(files)):
-  files[z] = files[z].split(".")[0].zfill(digits)
+  if files[z] != "":
+    files[z] = files[z].split(".")[0].zfill(digits)
   # print(files[z])
+
 
 # sorts files
 files.sort()
 
-print(files)
+# print(files)
+
 
 
 
