@@ -246,8 +246,9 @@ while i < len(files):
     print(temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
     if test_mode:
       os.rename('./Execute/' + files[i]['original'], temp_path + "/" + prefix + space + "{:0{leading}d}".format(start_point, leading=digits) + space + suffix + "." + files[i]['extension'])
-    else:
-      os.rename('./' + files[i]['original'], temp_path + "/" + prefix + space + "{:0{leading}d}".format(start_point, leading=digits) + space + suffix + "." + files[i]['extension'])
+    # REMOVE COMMENTS
+    # else:
+    #   os.rename('./' + files[i]['original'], temp_path + "/" + prefix + space + "{:0{leading}d}".format(start_point, leading=digits) + space + suffix + "." + files[i]['extension'])
 
   start_point += 1
   i += 1
