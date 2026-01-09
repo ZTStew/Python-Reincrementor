@@ -113,6 +113,10 @@ if args.suffix:
 if args.space:
   space = args.space
 
+if (len(prefix) <= 0) and (len(suffix) <= 0):
+  space = ""
+
+
 
 print(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: `{file_type}` | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
 log.critical(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: `{file_type}` | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
@@ -126,7 +130,7 @@ if test_mode:
 # files = [{'original': "og", 'new': "nw"}]
 files = []
 for (dirpath, dirnames, filenames) in walk(run_location):
-  # print(filenames)
+  print(filenames)
   # files.extend(filenames)
   for file in filenames:
     files.append({'original': file, 'new': file})
@@ -158,6 +162,7 @@ if file_type:
     # whitelisted files
     if file['new'].endswith(file_type):
       n_files.append(file)
+
     # non-whitelisted files
     else:
       file['new'] = ""
@@ -179,7 +184,13 @@ if numeric > 0:
       n_files.append(file)
 
   files = n_files
-print(files)
+# print(files)
+
+for file in files:
+  # Adds file extension to each `file`
+  file['extension'] = file['original'].split('.')[-1]
+
+# print(files)
 
 
 # identifies the longest file name in `files` so that each file can be preceded with 0's. This will help with sorting.
@@ -196,11 +207,15 @@ elif digits < depth:
 # print(digits)
 
 
+# NEED TO SEPERATE FROM END PRODUCT SO THAT A FILE LIKE: `asdf123.txt` DOES NOT RESULT IN `0000001.txt`
 # renames files in `files` so that they can be accurately sorted
 for z in range(len(files)):
   if files[z]['new'] != "":
     files[z]['new'] = files[z]['new'].split(".")[0].zfill(digits)
   # print(files[z])
+
+# for z in range(len(files)):
+#   files[z] = files[z].split(".")[0].zfill(depth)
 
 
 files = sorted(files, key=itemgetter('new'))
@@ -209,7 +224,22 @@ files = sorted(files, key=itemgetter('new'))
 #   print(i['new'])
 # print(files)
 
+# NEED TO MAKE TEMP FOLDER THAT THE NEW FILES WILL BE STORED IN UNTIL RENAMING IS COMPLETE
+i = 0
+while i < len(files):
+  if len(files[i]['new']) > 0:
+    if test_mode:
+      os.rename('./Execute/' + files[i]['original'], './Out/' + prefix + space + "{:0{leading}d}".format(start_point, leading=digits) + space + suffix + "." + files[i]['extension'])
+    else:
+      os.rename('./' + files[i]['original'], './' + prefix + space + "{:0{leading}d}".format(start_point, leading=digits) + space + suffix + "." + files[i]['extension'])
 
+  start_point += 1
+  i += 1
+
+# for file in files:
+  # if len(file['new']) > 0:
+  #   if test_mode:
+  #     os.rename('./Execute/' + file['original'], './Out/' + file['new'] + "." + file['extension'])
 
 
 
