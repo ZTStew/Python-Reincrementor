@@ -2,7 +2,7 @@
 Description:
 """
 
-import os, argparse
+import os, argparse, math, shutil
 import logging as log
 from os import walk
 from operator import itemgetter
@@ -66,7 +66,7 @@ args.add_argument(
   help="(Optional) Declair how many digits the file name should have. Default 1. Example: 3 -> `008.file`"
 )
 args.add_argument(
-  "-p",
+  "-pf",
   "--prefix",
   type=str,
   help="(Optional) Declair if the reincremented files should have a prefix in front of the number (`--space` automatically added after). Default \"\". Example: pre -> `pre 008.file`"
@@ -130,7 +130,7 @@ if test_mode:
 # files = [{'original': "og", 'new': "nw"}]
 files = []
 for (dirpath, dirnames, filenames) in walk(run_location):
-  print(filenames)
+  # print(filenames)
   # files.extend(filenames)
   for file in filenames:
     files.append({'original': file, 'new': file})
@@ -199,15 +199,10 @@ for l in files:
   if len(l['new'].split(".")[0]) > depth:
     depth = len(l['new'].split(".")[0])
 
-if digits == 0:
-  digits = depth
-elif digits < depth:
-  digits = depth
 
 # print(digits)
 
 
-# NEED TO SEPERATE FROM END PRODUCT SO THAT A FILE LIKE: `asdf123.txt` DOES NOT RESULT IN `0000001.txt`
 # renames files in `files` so that they can be accurately sorted
 for z in range(len(files)):
   if files[z]['new'] != "":
@@ -220,18 +215,39 @@ for z in range(len(files)):
 
 files = sorted(files, key=itemgetter('new'))
 
-# for i in files:
-#   print(i['new'])
+
+# If user did not assign a value for `digits`
+if digits == 0:
+  digits = math.ceil(len(files) / 10)
+
+
+# prevents leading or trailing spaces
+if prefix:
+  prefix = prefix + space
+if suffix:
+  suffix = space + suffix
+
 # print(files)
+
+
+# Creates temporary folder to store renamed files to prevent naming collisions with yet to be named files in initial folder
+# path made to be as unlikely as possible to have a collision
+temp_path = "./llltemplll"
+if not os.path.exists(temp_path):
+  os.makedirs(temp_path)
+
 
 # NEED TO MAKE TEMP FOLDER THAT THE NEW FILES WILL BE STORED IN UNTIL RENAMING IS COMPLETE
 i = 0
 while i < len(files):
   if len(files[i]['new']) > 0:
+    # Prints output file name without saving or modifying file system
+    # print(prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
+    print(temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
     if test_mode:
-      os.rename('./Execute/' + files[i]['original'], './Out/' + prefix + space + "{:0{leading}d}".format(start_point, leading=digits) + space + suffix + "." + files[i]['extension'])
+      os.rename('./Execute/' + files[i]['original'], temp_path + "/" + prefix + space + "{:0{leading}d}".format(start_point, leading=digits) + space + suffix + "." + files[i]['extension'])
     else:
-      os.rename('./' + files[i]['original'], './' + prefix + space + "{:0{leading}d}".format(start_point, leading=digits) + space + suffix + "." + files[i]['extension'])
+      os.rename('./' + files[i]['original'], temp_path + "/" + prefix + space + "{:0{leading}d}".format(start_point, leading=digits) + space + suffix + "." + files[i]['extension'])
 
   start_point += 1
   i += 1
@@ -242,6 +258,13 @@ while i < len(files):
   #     os.rename('./Execute/' + file['original'], './Out/' + file['new'] + "." + file['extension'])
 
 
+# Removes temp folder after program finishes
+try:
+  shutil.rmtree(temp_path)
+  log.info("Temp folder successfully deleted.")
+except Exception as e:
+  # print("ERROR: " + str(e))
+  log.error("ERROR: " + str(e))
 
 print("Program Terminated")
 log.critical("Program Terminated")
