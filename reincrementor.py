@@ -94,6 +94,7 @@ if args.test:
 
 if args.start:
   start_point = int(args.start)
+start_point = abs(start_point)
 
 if args.file:
   file_type = args.file
@@ -235,6 +236,10 @@ if not os.path.exists("./" + temp_path):
   os.makedirs("./" + temp_path)
 
 
+# value of `start_point` is consistantly too high
+start_point = start_point - 1
+
+
 i = 0
 while i < len(files):
   if len(files[i]['new']) > 0:
@@ -243,9 +248,8 @@ while i < len(files):
     
     if test_mode:
       os.rename('./Execute/' + files[i]['original'], './' + temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
-    # UNCOMMENT
     else:
-      os.rename('./' + files[i]['original'], temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
+      os.rename('./' + files[i]['original'], './' + temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
 
   start_point += 1
   i += 1
