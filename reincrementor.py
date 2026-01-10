@@ -1,5 +1,5 @@
 """
-Description:
+Description: Program runs through a given folder and reincrements the files contained within to not have any gaps in the numbering system.
 """
 
 import os, argparse, math, shutil
@@ -130,12 +130,11 @@ if test_mode:
 # files = [{'original': "og", 'new': "nw"}]
 files = []
 for (dirpath, dirnames, filenames) in walk(run_location):
-  # print(filenames)
-  # files.extend(filenames)
   for file in filenames:
     files.append({'original': file, 'new': file})
   break
 # print(files)
+
 
 # Removes any Blacklisted files from `files`
 n_files = []
@@ -154,6 +153,7 @@ for file in files:
 files = n_files
 # print(files)
 
+
 # Checks `files` list for specified file_type
 if file_type:
   n_files = []
@@ -171,6 +171,7 @@ if file_type:
   files = n_files
 # print(files)
 
+
 # Removes any files in `files` list that contain a non-integer value in the name
 if numeric > 0:
   n_files = []
@@ -186,10 +187,10 @@ if numeric > 0:
   files = n_files
 # print(files)
 
+
 for file in files:
   # Adds file extension to each `file`
   file['extension'] = file['original'].split('.')[-1]
-
 # print(files)
 
 
@@ -198,8 +199,6 @@ depth = 1
 for l in files:
   if len(l['new'].split(".")[0]) > depth:
     depth = len(l['new'].split(".")[0])
-
-
 # print(digits)
 
 
@@ -207,12 +206,9 @@ for l in files:
 for z in range(len(files)):
   if files[z]['new'] != "":
     files[z]['new'] = files[z]['new'].split(".")[0].zfill(digits)
-  # print(files[z])
-
-# for z in range(len(files)):
-#   files[z] = files[z].split(".")[0].zfill(depth)
 
 
+# Sorts files by name
 files = sorted(files, key=itemgetter('new'))
 
 
@@ -226,7 +222,6 @@ if prefix:
   prefix = prefix + space
 if suffix:
   suffix = space + suffix
-
 # print(files)
 
 
@@ -240,17 +235,17 @@ if not os.path.exists("./" + temp_path):
   os.makedirs("./" + temp_path)
 
 
-# NEED TO MAKE TEMP FOLDER THAT THE NEW FILES WILL BE STORED IN UNTIL RENAMING IS COMPLETE
 i = 0
 while i < len(files):
   if len(files[i]['new']) > 0:
     # Prints output file name without saving or modifying file system
     # print("./" + temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
+    
     if test_mode:
       os.rename('./Execute/' + files[i]['original'], './' + temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
     # UNCOMMENT
-    # else:
-    #   os.rename('./' + files[i]['original'], temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
+    else:
+      os.rename('./' + files[i]['original'], temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
 
   start_point += 1
   i += 1
