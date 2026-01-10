@@ -7,7 +7,7 @@ import logging as log
 from os import walk
 from operator import itemgetter
 
-path = os.path.dirname(os.path.abspath(__file__)) + '\\Log\\template.log'
+path = os.path.dirname(os.path.abspath(__file__)) + '\\Log\\log.log'
 
 log.basicConfig(
     filename= path,
