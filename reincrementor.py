@@ -232,9 +232,12 @@ if suffix:
 
 # Creates temporary folder to store renamed files to prevent naming collisions with yet to be named files in initial folder
 # path made to be as unlikely as possible to have a collision
-temp_path = "./llltemplll"
-if not os.path.exists(temp_path):
-  os.makedirs(temp_path)
+if test_mode:
+  temp_path = "Execute/llltemplll"
+else:
+  temp_path = "llltemplll"
+if not os.path.exists("./" + temp_path):
+  os.makedirs("./" + temp_path)
 
 
 # NEED TO MAKE TEMP FOLDER THAT THE NEW FILES WILL BE STORED IN UNTIL RENAMING IS COMPLETE
@@ -242,30 +245,35 @@ i = 0
 while i < len(files):
   if len(files[i]['new']) > 0:
     # Prints output file name without saving or modifying file system
-    # print(prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
-    print(temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
+    # print("./" + temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
     if test_mode:
-      os.rename('./Execute/' + files[i]['original'], temp_path + "/" + prefix + space + "{:0{leading}d}".format(start_point, leading=digits) + space + suffix + "." + files[i]['extension'])
-    # REMOVE COMMENTS
+      os.rename('./Execute/' + files[i]['original'], './' + temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
+    # UNCOMMENT
     # else:
-    #   os.rename('./' + files[i]['original'], temp_path + "/" + prefix + space + "{:0{leading}d}".format(start_point, leading=digits) + space + suffix + "." + files[i]['extension'])
+    #   os.rename('./' + files[i]['original'], temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
 
   start_point += 1
   i += 1
 
-# for file in files:
-  # if len(file['new']) > 0:
-  #   if test_mode:
-  #     os.rename('./Execute/' + file['original'], './Out/' + file['new'] + "." + file['extension'])
+# Moves renamed files from temp directory back into parent directory
+file_names = os.listdir("./" + temp_path)
+for file_name in file_names:
+    if test_mode:
+      shutil.move(os.path.join("./" + temp_path, file_name), "./Execute")
+    else:
+      shutil.move(os.path.join("./" + temp_path, file_name), "./")
 
 
 # Removes temp folder after program finishes
 try:
-  shutil.rmtree(temp_path)
+  shutil.rmtree("./" + temp_path)
   log.info("Temp folder successfully deleted.")
 except Exception as e:
   # print("ERROR: " + str(e))
   log.error("ERROR: " + str(e))
+
+print(str(len(files)) + " Files Have Been Renamed.")
+log.info(str(len(files)) + " Files Have Been Renamed.")
 
 print("Program Terminated")
 log.critical("Program Terminated")

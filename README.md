@@ -25,7 +25,15 @@ Program determines reincrement order based on current file order
 
 ---
 ### Arguments:
-
+- `--help`: (Optional) Lists all program arguments
+- `--test`: (Optional) Declair if the application should run in test mode [0 -> production (default) | 1 -> test mode].
+- `--start`: (Optional) Declair start value for reincrementing.
+- `--file`: (Optional) Declair a specific file type to be reincremented. Default all files.
+- `--numeric`: (Optional) Declair if the application should only work on files containing exclusively integers [0 -> all characters allowed (default) | 1 -> integer only].
+- `--digits`: (Optional) Declair how many digits the file name should have. Default 1. Example: 3 -> `008.file`
+- `--prefix`: (Optional) Declair if the reincremented files should have a prefix in front of the number (`--space` automatically added after). Default \"\". Example: pre -> `pre 008.file`
+- `--suffix`: (Optional) Declair if the reincremented files should have a suffix after the number (`--space` automatically added before). Default \"\". Example: suf -> `008 suf.file`
+- `--space`: (Optional) Defines what the `space` symbol should be in reincremented file name. Default \"\". Works with --prefix and/or --suffix. Example: `_` -> `008_suf.file`
 
 ---
 ### Test Settings:
