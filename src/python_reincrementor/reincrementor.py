@@ -2,29 +2,36 @@
 Description: Program runs through a given folder and reincrements the files contained within to not have any gaps in the numbering system.
 """
 
-import os, argparse, math, shutil
-import logging as log
+import argparse, math, os, shutil, sys
+# import logging as log
 from os import walk
 from operator import itemgetter
 
 def main():
-  path = os.path.dirname(os.path.abspath(__file__)) + '\\Log\\log.log'
+  # path = os.path.dirname(os.path.abspath(__file__)) + '\\Log\\log.log'
+  # gets local path to program execution location
+  # if getattr(sys, 'frozen', False):  
+  #     # Running as an exe
+  #     path = os.path.dirname(sys.executable)
+  # else:
+  #     # Running as a .py file
+  #     path = os.path.dirname(os.path.abspath(__file__))
 
-  log.basicConfig(
-      filename= path,
-      level=log.DEBUG,
-      format='%(asctime)s - %(levelname)s - %(message)s'
-  )
-  # log.debug("debug message")
-  # log.info("info message")
-  # log.warning("warning message")
-  # log.error("error message")
-  # log.critical("critical message")
+  # log.basicConfig(
+  #     filename= path,
+  #     level=log.DEBUG,
+  #     format='%(asctime)s - %(levelname)s - %(message)s'
+  # )
+  # # log.debug("debug message")
+  # # log.info("info message")
+  # # log.warning("warning message")
+  # # log.error("error message")
+  # # log.critical("critical message")
 
-  log.critical("### ### ### V Program Starts V ### ### ###")
+  # log.critical("### ### ### V Program Starts V ### ### ###")
 
   # List of any files (ends) that should not be automatically edited
-  blacklist = [".empty", ".gitignore", ".md"]
+  blacklist = [".py", ".exe", ".empty", ".gitignore", ".md"]
 
   test_mode = False
   start_point = 1
@@ -90,7 +97,7 @@ def main():
 
   if args.test:
     print("Test Running")
-    log.critical("Test Running")
+    # log.critical("Test Running")
     test_mode = True
 
   if args.start:
@@ -126,7 +133,7 @@ def main():
 
 
   print(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: `{file_type}` | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
-  log.critical(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: `{file_type}` | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
+  # log.critical(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: `{file_type}` | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
 
 
   run_location = "./"
@@ -242,8 +249,12 @@ def main():
     os.makedirs("./" + temp_path)
 
 
+  """
+  When in test mode, program consistantly makes file names '1' too high.
+  When in production, this issue disapears?
+  """
   # value of `start_point` is consistantly too high
-  start_point = start_point - 1
+  # start_point = start_point - 1
 
 
   i = 0
@@ -272,16 +283,16 @@ def main():
   # Removes temp folder after program finishes
   try:
     shutil.rmtree("./" + temp_path)
-    log.info("Temp folder successfully deleted.")
+    # log.info("Temp folder successfully deleted.")
   except Exception as e:
-    # print("ERROR: " + str(e))
-    log.error("ERROR: " + str(e))
+    print("ERROR: " + str(e))
+    # log.error("ERROR: " + str(e))
 
   print(str(len(files)) + " Files Have Been Renamed.")
-  log.info(str(len(files)) + " Files Have Been Renamed.")
+  # log.info(str(len(files)) + " Files Have Been Renamed.")
 
   print("Program Terminated")
-  log.critical("Program Terminated")
+  # log.critical("Program Terminated")
 
 if __name__ == "__main__":
   main()

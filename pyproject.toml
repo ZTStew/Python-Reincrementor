@@ -1,0 +1,10 @@
+[project]
+name = "reincrementor"
+version = "1.0.0"
+description = "Command line Reincrementor program"
+requires-python = ">=3.8"
+
+[project.scripts]
+reincrementor = "python_reincrementor.reincrementor:main"
+reincrement = "python_reincrementor.reincrementor:main"
+recount = "python_reincrementor.reincrementor:main"
