@@ -81,7 +81,7 @@ args.add_argument(
   "-sp",
   "--space",
   type=str,
-  help="(Optional) Defines what the `space` symbol should be in reincremented file name. Default \"\". Works with --prefix and/or --suffix. Example: `_` -> `008_suf.file`"
+  help="(Optional) Defines what the `space` symbol should be in reincremented file name. Default \"\". Works with --prefix and/or --suffix. Example: `_` -> `008_suf.file`. Using 'dash' -> 008-suf.file. Using 'ddash' -> 008--suf.file"
 )
 
 
@@ -116,6 +116,11 @@ if args.space:
 
 if (len(prefix) <= 0) and (len(suffix) <= 0):
   space = ""
+
+if space == "dash":
+  space = "-"
+elif space == "ddash" or space == "doubledash":
+  space = "--"
 
 
 
