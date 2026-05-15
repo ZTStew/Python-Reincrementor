@@ -3,35 +3,14 @@ Description: Program runs through a given folder and reincrements the files cont
 """
 
 import argparse, math, os, shutil, sys
-# import logging as log
 from os import walk
 from operator import itemgetter
 
 def main():
-  # path = os.path.dirname(os.path.abspath(__file__)) + '\\Log\\log.log'
-  # gets local path to program execution location
-  # if getattr(sys, 'frozen', False):  
-  #     # Running as an exe
-  #     path = os.path.dirname(sys.executable)
-  # else:
-  #     # Running as a .py file
-  #     path = os.path.dirname(os.path.abspath(__file__))
-
-  # log.basicConfig(
-  #     filename= path,
-  #     level=log.DEBUG,
-  #     format='%(asctime)s - %(levelname)s - %(message)s'
-  # )
-  # # log.debug("debug message")
-  # # log.info("info message")
-  # # log.warning("warning message")
-  # # log.error("error message")
-  # # log.critical("critical message")
-
-  # log.critical("### ### ### V Program Starts V ### ### ###")
-
   # List of any files (ends) that should not be automatically edited
-  blacklist = [".py", ".exe", ".empty", ".gitignore", ".md"]
+  blacklist = [".py", ".exe", ".empty", ".gitignore", ".md", ".msi", 
+              ".sys", ".iso", ".htm", ".html", ".bat", ".accdt", 
+              ".accdr", ".accde", ".accdb"]
 
   test_mode = False
   start_point = 1
@@ -41,6 +20,13 @@ def main():
   prefix = ""
   suffix = ""
   space = " "
+  # Default file name tempo
+  tempo = 1
+
+  file_tempo_help_text = """
+    (Optional) Sets file name tempo; the space between file name numbers.\n
+    [1 (default) -> 1, 2, 3 | 2 -> 2, 4, 6 | 3... -> 3..., 6..., 9...]
+  """
 
   args = argparse.ArgumentParser()
   args.add_argument(
@@ -91,13 +77,19 @@ def main():
     type=str,
     help="(Optional) Defines what the `space` symbol should be in reincremented file name. Default \"\". Works with --prefix and/or --suffix. Example: `_` -> `008_suf.file`. Using 'dash' -> 008-suf.file. Using 'ddash' -> 008--suf.file"
   )
+  # command line option for specifying file name tempo
+  args.add_argument(
+    "-tm",
+    "--tempo",
+    type=int,
+    help=file_tempo_help_text
+  )
 
 
   args = args.parse_args()
 
   if args.test:
     print("Test Running")
-    # log.critical("Test Running")
     test_mode = True
 
   if args.start:
@@ -122,6 +114,12 @@ def main():
   if args.space:
     space = args.space
 
+  if args.tempo:
+    if args.tempo <= 0:
+      tempo = 1
+  else:
+    tempo = args.tempo
+
   if (len(prefix) <= 0) and (len(suffix) <= 0):
     space = ""
 
@@ -133,8 +131,6 @@ def main():
 
 
   print(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: `{file_type}` | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
-  # log.critical(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: `{file_type}` | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
-
 
   run_location = "./"
   if test_mode:
@@ -208,6 +204,10 @@ def main():
   # print(files)
 
 
+
+  ################
+  # File Sorting #
+  ################
   # identifies the longest file name in `files` so that each file can be preceded with 0's. This will help with sorting.
   depth = 1
   for l in files:
@@ -283,16 +283,18 @@ def main():
   # Removes temp folder after program finishes
   try:
     shutil.rmtree("./" + temp_path)
-    # log.info("Temp folder successfully deleted.")
   except Exception as e:
     print("ERROR: " + str(e))
-    # log.error("ERROR: " + str(e))
 
-  print(str(len(files)) + " Files Have Been Renamed.")
-  # log.info(str(len(files)) + " Files Have Been Renamed.")
+  new_files = 0
+  for new_f in files:
+    if new_f['new']:
+      new_files += 1
+
+  print(str(len(files)) + " Files Have Been Found.")
+  print(str(new_files) + " Files Have Been Renamed.")
 
   print("Program Terminated")
-  # log.critical("Program Terminated")
 
 if __name__ == "__main__":
   main()

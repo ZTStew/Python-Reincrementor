@@ -34,10 +34,11 @@ Program determines reincrement order based on current file order
 - `--prefix`: (Optional) Declair if the reincremented files should have a prefix in front of the number (`--space` automatically added after). Default \"\". Example: pre -> `pre 008.file`
 - `--suffix`: (Optional) Declair if the reincremented files should have a suffix after the number (`--space` automatically added before). Default \"\". Example: suf -> `008 suf.file`
 - `--space`: (Optional) Defines what the `space` symbol should be in reincremented file name. Default \"\". Works with --prefix and/or --suffix. Example: `_` -> `008_suf.file`
+- `--tempo`: (Optional) Sets the space between file name numbers [1 (default) -> 1, 2, 3 | 2 -> 2, 4, 6 | 3... -> 3..., 6..., 9...]
 
 ---
 ### Test Settings:
-python reincrementor.py -t 1 -st 5 -f txt -d 3 -p pre -sf suf -sp _ -n 1
+python reincrementor.py -t 1 -st 5 -f txt -d 3 -p pre -sf suf -sp _
 
 ---
 ### Program Installation:
