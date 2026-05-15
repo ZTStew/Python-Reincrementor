@@ -117,8 +117,10 @@ def main():
   if args.tempo:
     if args.tempo <= 0:
       tempo = 1
+    else:
+      tempo = args.tempo
   else:
-    tempo = args.tempo
+    tempo = 1
 
   if (len(prefix) <= 0) and (len(suffix) <= 0):
     space = ""
@@ -130,7 +132,7 @@ def main():
 
 
 
-  print(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: `{file_type}` | Digits: {digits} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`")
+  print(f"Arguments: Test: {test_mode} | Start Point: {start_point} | File Type: `{file_type}` | Digits: {digits} | Numeric: {numeric} | Prefix: {prefix} | Suffix: {suffix} | Space: `{space}`, | Tempo: {tempo}")
 
   run_location = "./"
   if test_mode:
@@ -268,7 +270,7 @@ def main():
       else:
         os.rename('./' + files[i]['original'], './' + temp_path + "/" + prefix + "{:0{leading}d}".format(start_point, leading=digits) + suffix + "." + files[i]['extension'])
 
-    start_point += 1
+      start_point += tempo
     i += 1
 
   # Moves renamed files from temp directory back into parent directory
